@@ -8,7 +8,7 @@ RUN apt-get update \
 WORKDIR /app
 
 # comma-seperated list of features to enable
-ARG CARGO_BUILD_FEATURES=default
+ARG CARGO_BUILD_FEATURES=default,prometheus-metrics
 
 # This can be set to release using --build-arg
 ARG RUST_RELEASE_MODE="release"

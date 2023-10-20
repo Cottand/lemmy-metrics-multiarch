@@ -1,8 +1,11 @@
-# lemmy-docker-multiarch
+# lemmy-metric-multiarch
 
 [![Build Multiarch Images](https://github.com/ubergeek77/lemmy-docker-multiarch/actions/workflows/build-multiarch.yml/badge.svg?branch=main)](https://github.com/ubergeek77/lemmy-docker-multiarch/actions/workflows/build-multiarch.yml)
 
-A build repository for multiarch Docker images for Lemmy.
+A build repository for metrics-capable and multiarch Docker images for Lemmy.
+
+I enable prometheus metrics by setting the `prometheus-metrics` feature at build time.
+See [the official docs](https://join-lemmy.org/docs/administration/prometheus.html) for more details.
 
 Builds [`LemmyNet/lemmy`](https://github.com/LemmyNet/lemmy/) and [`LemmyNet/lemmy-ui`](https://github.com/LemmyNet/lemmy-ui/) for:
 
@@ -10,20 +13,28 @@ Builds [`LemmyNet/lemmy`](https://github.com/LemmyNet/lemmy/) and [`LemmyNet/lem
 - ARM (`arm/v7`)
 - ARM64 (`arm64`)
 
-I made these because the Lemmy project does not currently support ARM, [and has been deliberating how to create ARM builds since `0.17.4`](https://github.com/LemmyNet/lemmy/issues/3102). The Dockerfiles I use, and the workflow I use to compile these images, are all open source here. [You can see the logs of previous runs on the Actions tab](https://github.com/ubergeek77/lemmy-docker-multiarch/actions/workflows/build-multiarch.yml).
+Other than for
+- metrics enabled
+- multi-arch builds
+- GHCR docker registry (so no rate limiting like with Dockerhub)
+
+They are the same as the official upstream images, so they can act as a drop-in replacement. You are welcome to use these.
 
 When [`LemmyNet/lemmy`](https://github.com/LemmyNet/lemmy/) or [`LemmyNet/lemmy-ui`](https://github.com/LemmyNet/lemmy-ui/) have new tags, my workflow will automatically be launched and those new tags will be built.
-
-These images are primarily here so they can be used in my [Lemmy-Easy-Deploy](https://github.com/ubergeek77/Lemmy-Easy-Deploy) project. However, you may use these images manually if you like. They are drop-in replacements for the official Lemmy images.
 
 I don't tag `latest`, so you will need to specify a tag to pull. For example, to use `0.18.0`:
 
 ```
-ghcr.io/ubergeek77/lemmy:0.18.0
-ghcr.io/ubergeek77/lemmy-ui:0.18.0
+ghcr.io/cottand/lemmy:0.18.0
+ghcr.io/cottand/lemmy-ui:0.18.0
 ```
 
 I also build `rc` tags. In general, I will have images for any stable or `rc` tag of the official Lemmy repositories. To see the full list of tags I've built, check the Packages section on this repo, or go to the images directly:
 
-- https://github.com/ubergeek77/lemmy-docker-multiarch/pkgs/container/lemmy
-- https://github.com/ubergeek77/lemmy-docker-multiarch/pkgs/container/lemmy-ui
+- https://github.com/cottand/lemmy-docker-multiarch/pkgs/container/lemmy
+- https://github.com/cottand/lemmy-docker-multiarch/pkgs/container/lemmy-ui
+
+
+This repo is forked from [ubergeek77/lemmy-docker-multiarch](https://github.com/ubergeek77/lemmy-docker-multiarch),
+which builds the same images for multi-arch but does not enable the prometheus metrics feature - so
+credit goes to @ubergeek77 for that.
