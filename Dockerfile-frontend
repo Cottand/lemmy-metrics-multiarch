@@ -9,7 +9,7 @@ RUN cd /app && \
   CGO_ENABLED=0 go build
 
 # Original Dockerfile below (mostly)
-FROM node:alpine as builder
+FROM node:20-alpine as builder
 
 # Upgrade to edge to fix sharp/libvips issues
 RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/main" > /etc/apk/repositories && \
@@ -51,7 +51,7 @@ COPY .git .git
 RUN echo "export const VERSION = '$(git describe --tag)';" > "src/shared/version.ts"
 
 RUN yarn --production --prefer-offline
-RUN yarn build:prod
+RUN yarn NODE_OPTIONS="--max-old-space-size=8192" build:prod
 
 # Prune the image
 # Copy the manually built node-prune here
@@ -66,7 +66,7 @@ RUN rm -rf ./node_modules/npm
 
 RUN du -sh ./node_modules/* | sort -nr | grep '\dM.*'
 
-FROM node:alpine as runner
+FROM node:20-alpine as runner
 
 # Upgrade to edge to fix sharp/libvips issues
 RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/main" > /etc/apk/repositories && \
